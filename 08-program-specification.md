@@ -268,24 +268,42 @@ with someone else — most of the value is in the disagreements.
 
 Consider this specification:
 
-> *A library lets members borrow items. Each item has a title and a unique
-> catalogue number. Books can be borrowed for three weeks; DVDs can be borrowed
-> for one week. Some items are reference-only and cannot be borrowed at all.
-> Members log in with a member number and can place a hold on an item that is
-> currently on loan. Librarians can add new items to the catalogue and can waive
-> a member's late fee.*
+> *A <u>library</u> <mark>lets</mark> <u>members</u> <mark>borrow</mark> <u>items</u>. Each <u>item</u> <mark>has</mark> a <u>title</u> and a unique
+> <u>catalogue number</u>. <u>Books</u> can be <mark>borrowed</mark> for three <u>weeks</u>; <u>DVDs</u> can be <mark>borrowed</mark>
+> for one <u>week</u>. Some <u>items</u> <mark>are</mark> reference-only and cannot be <mark>borrowed</mark> at all.
+> <u>Members</u> <mark>log in</mark> with a <u>member number</u> and can <mark>place</mark> a hold on an <u>item</u> that is
+> currently on loan. <u>Librarians</u> can <mark>add</mark> new <u>items</u> to the <u>catalogue</u> and can <mark>waive</mark>
+> a <u>member's</u> late <u>fee</u>.*
 
 1. Underline the nouns and list the candidate classes. For each noun you
    *reject*, say briefly why (attribute value, synonym, irrelevant, ...).
+
+Classes:
+Library, Members, Items, Catalogue, DVDs, Books, Hold
+
+Attributes:
+Catalogue Number, Weeks, Member Numbers
+
 2. Circle the verb phrases and list the responsibilities. Assign each one to a
    class.
+
+Member - Borrow Item, Place Hold, Log in.
+
+Librarian - Add Items, Waive Fees
+
+
 3. Decide where **inheritance** and where an **interface** is warranted. Two
    things worth thinking hard about: reference-only items versus borrowable ones
    (books and DVDs differ only in their loan period — is that a subclass, or a
    field?), and what `Member` and `Librarian` have in common.
+
+Member and Librarian Both inherit from top class User.
+DVDs and Books inherit from Item.
+
 4. Draw the resulting UML class diagram. See
    [§3.8 UML Class Diagrams](03-relationships-between-classes.md#38-uml-class-diagrams)
    for the notation.
+
 
 You can draw your answer in text with **PlantUML**: a starter file is provided
 at
@@ -309,6 +327,14 @@ scenario again. Keep going until it stabilizes.
 Then answer: **which class should be responsible for knowing whether an item is
 currently on loan?** Give at least two candidates and the trade-off between
 them.
+
+1. LoanHandler Class
+Independent class that tracks loans 
+for items. Adds an extra class thats complex but handles single responsibility
+well and keeps data abstract. Could take away from the Member's responsibility.
+
+2. Item class itself
+The item itself cuts out a layer of abstraction making the reference more straightforward but it adds an extra responsibility onto the class itself, being not just data but also handling states as well.
 
 <details>
 <summary>Hints</summary>
@@ -345,10 +371,35 @@ Assume the following requirements:
 Write a use case using the lightweight format from this section:
 
 1. Choose a name and identify the primary actor.
-2. State the preconditions, trigger, and success outcome.
+
+The Student is the primary actor in this case. 
+
+2. State the preconditions, trigger, 
+and success outcome.
+
+Preconditions: The student is logged in, the student has a room, date and time, and has no pre-existing reservations.
+
+Trigger: The student fills out the form and presses submit.
+
+Success Outcome: Reservation is posted, the room is reserved, and the student gets a confirmation.
+
 3. Write a main success scenario in which the room is reserved.
-4. Write an extension for the room becoming unavailable. Tie it to a particular step in the main scenario.
+
+Student meets preconditions, selects a room and there is no pre-existing reservation for the room.
+
+4. Write an extension for the room becoming unavailable. Tie it to a 
+particular step in the main scenario.
+
+In the event the room becomes unavailable, 
+* The user is notified.
+* The interface updates to no longer show the room as a selectable option.
+
 5. Identify one more plausible extension. State what the user observes and whether the system's state changes.
+
+Preconditions are not met.
+* The user is notified
+* The interface updates to show missing or invalid components.
+
 
 Review your draft with these questions:
 
