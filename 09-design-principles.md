@@ -233,6 +233,9 @@ public class Report {
 ```
 
 Which SOLID principle is most clearly violated here, and how would you fix it?
+SRP. This is evidently doing three different things for a single report. Generating, saving to a file, and emailing are three different responsibilites. Instead, split these up into individual handlers. Report can keep the datatypes of path and address, and even generate.
+
+SaveToFile becomes a different class, as well as Email.
 
 <details>
 <summary>Show answer</summary>
